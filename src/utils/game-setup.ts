@@ -28,19 +28,24 @@ export const groupedDistribution: Array<[string[], number]> = [
 ];
 
 export const distributionMap = new Map<string, number>(
-  groupedPoints.flatMap(([letters, distribution]) =>
+    groupedDistribution.flatMap(([letters, distribution]) =>
     (letters as string[]).map(
       (letter) => [letter.toUpperCase(), distribution] as [string, number]
     )
   )
 );
 
-export const tileBag = (): Array<[string, number]> => {
+export type GameTile = {
+    letter: string;
+    points: number;
+  };
+
+export const tileBag = (): Array<GameTile> => {
   return Array.from(distributionMap.entries()).flatMap(([letter, count]) => {
     const points = pointMap.get(letter);
     if (points === undefined) {
       throw new Error(`Point value not found for letter: ${letter}`);
     }
-    return Array(count).fill([letter, points]);
+    return Array(count).fill({ letter, points});
   });
 };
