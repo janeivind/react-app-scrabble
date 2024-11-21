@@ -15,5 +15,12 @@ export default defineConfig(() => {
         hooks: resolve(__dirname, "src", "hooks"),
       },
     },
+    test: {
+      globals: true,
+          environment: 'jsdom',
+      include: ['src/**/__tests__/**/*.[jt]s?(x)'],
+      exclude: ['src/**/__fixtures__/**'],    
+      setupFiles: ['./vitest.setup.ts'],
+    },
   };
 });
