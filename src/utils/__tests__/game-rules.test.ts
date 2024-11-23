@@ -31,7 +31,6 @@ describe("game-rules", () => {
       (accumulator, currentValue) => accumulator + (currentValue.points * currentValue.ratio),
       0
     );
-    console.log(staticTiles)
     expect(wordScore(word, staticTiles)).toEqual(tileSum);
   });
 });

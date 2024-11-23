@@ -37,8 +37,8 @@
     "build": "tsc && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "vitest",
-    "test:watch": "TZ=UTC npx vitest --pool=forks --watch"
+    "test": "vitest --pool=forks --reporter=verbose",
+    "test:watch": "vitest --pool=forks --watch"
   },
   "dependencies": {
     "@heroicons/react": "2.1.5",

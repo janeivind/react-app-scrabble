@@ -5,8 +5,6 @@ import {
   shuffle,
   range,
   compact,
-  findIndex,
-  pullAt,
   clone,
   orderBy,
 } from "lodash";
@@ -93,7 +91,7 @@ const readWordsFromFile = (filePath: string): Array<string> => {
   }
 };
 
-const dictionary = (): Array<Word> => {
+export const dictionary = (): Array<Word> => {
   const words = readWordsFromFile(
     "../react-app-scrabble/src/assets/dictionary.txt"
   );
@@ -109,50 +107,3 @@ const dictionary = (): Array<Word> => {
   return dictonaryWords;
 };
 
-export const gameWords = dictionary();
-
-export const getValidWordsFromTiles = (
-  tiles: Array<GameTile>,
-  max: number = 99999
-): Array<Word> => {
-  const randomLetters = tiles.map((tile) => tile.letter.toUpperCase());
-  let matchingWords: Array<Word> = [];
-
-  console.time("Execution Time");
-
-  gameWords.forEach((word) => {
-    const testWord = [...word.letters];
-    randomLetters.forEach((letter) => {
-      const index = findIndex(testWord, (item) => item === letter);
-      if (index !== -1) {
-        pullAt(testWord, index);
-      }
-    });
-    // If matching word, add to list with the point from drawn tiles
-    if (testWord.length === 0) {
-      matchingWords.push({ ...word, points: wordScore(word.spelling, tiles) });
-    }
-  });
-  console.timeEnd("Execution Time");
-  return orderBy(matchingWords, "points", "desc").slice(0, max);
-};
-
-export const getHighestScoringWordsWithRatio = (
-  tiles: Array<GameTile>,
-  scoreRatio: number = 3
-): Array<Word> => {
-  let matchingWords: Array<Word> = [];
-
-  tiles.forEach((tile, index) => {
-    tiles[index].ratio = scoreRatio;
-    tiles[index].points = tiles[index].points * scoreRatio;
-    const highestScoringWord = getValidWordsFromTiles(tiles, 1);
-    const newWord = {...highestScoringWord[0], tiles: Array.from(tiles)};
-    // console.log('newWord')
-    // console.log(newWord)
-    matchingWords.push(newWord);
-    tiles[index].points = tiles[index].points / scoreRatio;
-    tiles[index].ratio = 1;
-  });
-  return orderBy(matchingWords, "points", "desc");
-};
