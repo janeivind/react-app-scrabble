@@ -1,3 +1,15 @@
+import * as fs from "fs";
+import * as path from "path";
+import { wordScore } from "./game-rules";
+import {
+  shuffle,
+  range,
+  compact,
+  clone,
+  orderBy,
+} from "lodash";
+import { GameTile, Word } from "./interfaces";
+
 export const groupedPoints: Array<[string[], number]> = [
   [["E", "A", "I", "O", "N", "R", "T", "L", "S", "U"], 1],
   [["D", "G"], 2],
@@ -8,12 +20,8 @@ export const groupedPoints: Array<[string[], number]> = [
   [["Q", "Z"], 10],
 ];
 
-export const pointMap = new Map<string, number>(
-  groupedPoints.flatMap(([letters, points]) =>
-    (letters as string[]).map(
-      (letter) => [letter.toUpperCase(), points] as [string, number]
-    )
-  )
+export const gameTiles = groupedPoints.flatMap<GameTile>(([letters, points]) =>
+  letters.map((letter) => ({ letter: letter.toUpperCase(), points, ratio: 1 }))
 );
 
 export const groupedDistribution: Array<[string[], number]> = [
@@ -27,20 +35,75 @@ export const groupedDistribution: Array<[string[], number]> = [
   [["K", "J", "X", "Q", "Z"], 1],
 ];
 
-export const distributionMap = new Map<string, number>(
-  groupedPoints.flatMap(([letters, distribution]) =>
-    (letters as string[]).map(
-      (letter) => [letter.toUpperCase(), distribution] as [string, number]
-    )
-  )
+export const distributionMap = groupedDistribution.flatMap<GameTile>(
+  ([letters, points]) =>
+    letters.map((letter) => ({ letter: letter.toUpperCase(), points, ratio: 1 }))
 );
 
-export const tileBag = (): Array<[string, number]> => {
-  return Array.from(distributionMap.entries()).flatMap(([letter, count]) => {
-    const points = pointMap.get(letter);
-    if (points === undefined) {
-      throw new Error(`Point value not found for letter: ${letter}`);
-    }
-    return Array(count).fill([letter, points]);
-  });
+export const tileBag = distributionMap.flatMap<GameTile>((distribution) => {
+  const tile = gameTiles.find(
+    (item) => item.letter === distribution.letter
+  );
+  if (tile === undefined) {
+    throw new Error(`Tile values not found for letter: ${distribution.letter}`);
+  }
+  return Array(distribution.points).fill(clone(tile));
+});
+
+export const drawTiles = (count: number = 7): Array<GameTile> => {
+  const allTiles = tileBag;
+  const indexPool: Array<number> = shuffle(range(0, allTiles.length));
+  return compact(
+    indexPool.slice(0, count).map<GameTile | undefined>((tileNumber) => {
+      const tile = allTiles[tileNumber];
+      return clone(tile);
+    })
+  );
 };
+
+export const drawTile = (letter: string): GameTile => {
+  const tile = tileBag.find((tile) => tile.letter === letter)!;
+  return clone(tile);
+};
+
+export const getWordTiles = (word: string): Array<GameTile> => {
+  return orderBy(
+    word.split("").map((letter) => drawTile(letter)),
+    "points",
+    "desc"
+  );
+};
+
+const readWordsFromFile = (filePath: string): Array<string> => {
+  try {
+    const fullPath = path.resolve(filePath);
+    const fileContent = fs.readFileSync(fullPath, "utf-8");
+
+    const words = fileContent
+      .split("\n") // Split by whitespace (space, tab, newline, etc.)
+      .map((word) => word.trim().toUpperCase()) // Trim each word
+      .filter((word) => word.length > 0); // Remove empty strings
+
+    return words;
+  } catch (error) {
+    console.error("Error reading the file:", error);
+    return [];
+  }
+};
+
+export const dictionary = (): Array<Word> => {
+  const words = readWordsFromFile(
+    "../react-app-scrabble/src/assets/dictionary.txt"
+  );
+  const dictonaryWords = words.map((word) => {
+    return {
+      spelling: word,
+      letters: word.split(""),
+      length: word.length,
+      points: wordScore(word),
+      tiles: getWordTiles(word),
+    };
+  });
+  return dictonaryWords;
+};
+
