@@ -1,8 +1,8 @@
 import { Grid } from "@radix-ui/themes";
 import { GameTile } from "../../utils/interfaces";
 import { FC } from "react";
-import Tile from "components/atoms";
-import { TileType } from "components/atoms/tile";
+import { Tile } from 'components/atoms';
+import { TileType } from 'components/atoms/Tile';
 
 interface Props {
   tiles: Array<GameTile>;
@@ -27,7 +27,7 @@ const TileBoard: FC<Props> = ({ tiles, tileType = "dealer" }) => {
             tileType={tileType}
             variant="solid"
             radius="small"
-            color="yellow"
+            color="gold"
             tile={tile}
           />
         );

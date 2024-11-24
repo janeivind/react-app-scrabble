@@ -5,7 +5,7 @@ import { Responsive } from "@radix-ui/themes/props";
 
 export type TileType = "dealer" | "result";
 
-interface Props extends Omit<AvatarProps, "fallback"> {
+export interface Props extends Omit<AvatarProps, "fallback"> {
   tile: GameTile;
   tileType: TileType;
 }
@@ -16,7 +16,7 @@ const tileStyle: React.CSSProperties = {
 
 const pointStyleBase: React.CSSProperties = {
   position: "absolute",
-  color: "black",
+  color: "var(--accent-contrast)",
 };
 
 const pointStyleDealer: React.CSSProperties = {
@@ -26,16 +26,16 @@ const pointStyleDealer: React.CSSProperties = {
 };
 
 const pointStyleResult: React.CSSProperties = {
-  bottom: "0rem",
+  bottom: "-0.2rem",
   right: "0.2rem",
-  fontSize: "0.5rem",
+  fontSize: "0.4rem",
 };
 
 const Tile: FC<Props> = ({ tile, tileType, ...rest }) => {
   const size: Responsive<"2" | "6"> = tileType === "result" ? "2" : "6";
   const resultFontSize = size === "2" ? pointStyleResult : pointStyleDealer;
   return (
-    <div style={tileStyle}>
+    <div style={tileStyle} data-testid="tile">
       <Avatar size={size} {...rest} fallback={tile.letter} />
       <div style={{ ...pointStyleBase, ...resultFontSize }}>{tile.points}</div>
     </div>

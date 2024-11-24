@@ -15,9 +15,6 @@ export default defineConfig(() => {
         hooks: resolve(__dirname, "src", "hooks"),
       },
     },
-    alias: {
-      path: 'path-browserify',
-    },
     test: {
       globals: true,
       environment: 'jsdom',
