@@ -1,14 +1,7 @@
-import * as fs from "fs";
-import * as path from "path";
 import { wordScore } from "./game-rules";
-import {
-  shuffle,
-  range,
-  compact,
-  clone,
-  orderBy,
-} from "lodash";
+import { shuffle, range, compact, clone, orderBy } from "lodash";
 import { GameTile, Word } from "./interfaces";
+import dictonary from "./game-dictionary.js";
 
 export const groupedPoints: Array<[string[], number]> = [
   [["E", "A", "I", "O", "N", "R", "T", "L", "S", "U"], 1],
@@ -37,13 +30,15 @@ export const groupedDistribution: Array<[string[], number]> = [
 
 export const distributionMap = groupedDistribution.flatMap<GameTile>(
   ([letters, points]) =>
-    letters.map((letter) => ({ letter: letter.toUpperCase(), points, ratio: 1 }))
+    letters.map((letter) => ({
+      letter: letter.toUpperCase(),
+      points,
+      ratio: 1,
+    }))
 );
 
 export const tileBag = distributionMap.flatMap<GameTile>((distribution) => {
-  const tile = gameTiles.find(
-    (item) => item.letter === distribution.letter
-  );
+  const tile = gameTiles.find((item) => item.letter === distribution.letter);
   if (tile === undefined) {
     throw new Error(`Tile values not found for letter: ${distribution.letter}`);
   }
@@ -74,27 +69,13 @@ export const getWordTiles = (word: string): Array<GameTile> => {
   );
 };
 
-const readWordsFromFile = (filePath: string): Array<string> => {
-  try {
-    const fullPath = path.resolve(filePath);
-    const fileContent = fs.readFileSync(fullPath, "utf-8");
-
-    const words = fileContent
-      .split("\n") // Split by whitespace (space, tab, newline, etc.)
-      .map((word) => word.trim().toUpperCase()) // Trim each word
-      .filter((word) => word.length > 0); // Remove empty strings
-
-    return words;
-  } catch (error) {
-    console.error("Error reading the file:", error);
-    return [];
-  }
-};
 
 export const dictionary = (): Array<Word> => {
-  const words = readWordsFromFile(
-    "../react-app-scrabble/src/assets/dictionary.txt"
-  );
+  const words = dictonary
+    .split("\n") // Split by whitespace (space, tab, newline, etc.)
+    .map((word) => word.trim().toUpperCase()) // Trim each word
+    .filter((word) => word.length > 0); // Remove empty strings
+
   const dictonaryWords = words.map((word) => {
     return {
       spelling: word,
@@ -106,4 +87,3 @@ export const dictionary = (): Array<Word> => {
   });
   return dictonaryWords;
 };
-

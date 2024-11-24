@@ -1,5 +1,6 @@
+const dictionary = 
+`aah
 aa
-aah
 aahed
 aahing
 aahs
@@ -178689,3 +178690,6 @@ zymurgy
 zyzzyva
 zyzzyvas
 zzz
+`;
+
+export default dictionary;
