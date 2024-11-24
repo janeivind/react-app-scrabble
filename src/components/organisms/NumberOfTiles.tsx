@@ -1,15 +1,23 @@
 import { RadioCards, Text } from "@radix-ui/themes";
+import { useGameContext } from 'components/ScrabbleProvider';
 import { FC } from "react";
 
 const tileNumberRange = [5, 6, 7, 8, 9, 10];
 
 const NumberOfTiles: FC = () => {
+  const { setNumberOfTilesToDraw, numberOfTiles } = useGameContext();
+
+  const handleChange = (value: string) => {
+    setNumberOfTilesToDraw(Number(value));
+  };
+
   return (
     <RadioCards.Root
-      defaultValue="7"
+      defaultValue={numberOfTiles.toString()}
       size="1"
       variant="classic"
       className="ml-3"
+      onValueChange={handleChange} 
       columns={tileNumberRange.length.toString()}
     >
       {tileNumberRange.map((selection) => {

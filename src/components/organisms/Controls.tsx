@@ -2,8 +2,15 @@ import { Button, Grid, Text } from "@radix-ui/themes";
 import { FC } from "react";
 import { NumberOfTiles } from ".";
 import { gridStyle } from "./styles";
+import { useGameContext } from 'components/ScrabbleProvider';
 
 const Controls: FC = () => {
+  const { dealNewTiles } = useGameContext();
+  
+  const handleButtonClick = () => {
+    dealNewTiles();
+  };
+
   return (
     <Grid
       gap="3"
@@ -19,6 +26,7 @@ const Controls: FC = () => {
           width: "150px",
           cursor: 'pointer'
         }}
+        onClick={handleButtonClick}
       >
         Deal me
       </Button>
