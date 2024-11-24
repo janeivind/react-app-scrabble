@@ -1,7 +1,7 @@
 import { Button, Grid, Text } from "@radix-ui/themes";
 import { FC } from "react";
 import { NumberOfTiles } from ".";
-import { gridStyle } from "./styles";
+import { gridStyle } from "../../app/styles";
 import { useGameContext } from 'components/ScrabbleProvider';
 
 const Controls: FC = () => {

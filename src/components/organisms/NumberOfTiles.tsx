@@ -5,10 +5,10 @@ import { FC } from "react";
 const tileNumberRange = [5, 6, 7, 8, 9, 10];
 
 const NumberOfTiles: FC = () => {
-  const { setNumberOfTilesToDraw, numberOfTiles } = useGameContext();
+  const { setNumberOfTiles, numberOfTiles } = useGameContext();
 
   const handleChange = (value: string) => {
-    setNumberOfTilesToDraw(Number(value));
+    setNumberOfTiles(Number(value));
   };
 
   return (

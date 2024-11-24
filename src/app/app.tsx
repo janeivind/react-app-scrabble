@@ -1,10 +1,10 @@
-import { TileBoard, Controls } from "components/organisms/index";
+import { TileBoard, Controls, ScoreBoard } from "components/organisms/index";
 import exampleImage from "../assets/scrabble.png";
 import { Grid } from "@radix-ui/themes";
 import { useGameContext } from 'components/ScrabbleProvider';
 
 function App() {
-  const { selectedTiles } = useGameContext();
+  const { selectedTiles, validWords } = useGameContext();
   return (
     <main className="mx-auto px-40 py-20">
       <header>
@@ -27,6 +27,7 @@ function App() {
         <Grid gap="5">
           <TileBoard tiles={selectedTiles} />
           <Controls />
+          <ScoreBoard words={validWords}/>
         </Grid>
       <footer className="pb-16 max-w-screen-lg xl:max-w-screen-xl mx-auto text-center sm:text-right text-gray-400 font-bold">
         <a href="https://github.com/janeivind/react-app-scrabble">

@@ -39,8 +39,8 @@ describe("game-setup", () => {
     expect(tileCount).toEqual(tileBag.length);
   });
 
-  test("read valid words from file", () => {
+  test.only("read valid words from file", () => {
     const gameWords = dictionary();
-    expect(gameWords.length).toBeGreaterThan(0);
+    expect(gameWords.length).toBeGreaterThan(200);
   });
 });

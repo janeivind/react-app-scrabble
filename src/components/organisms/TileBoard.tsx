@@ -2,7 +2,7 @@ import { Grid } from "@radix-ui/themes";
 import { GameTile } from "../../utils/interfaces";
 import { FC } from "react";
 import Tile from 'components/atoms';
-import { gridStyle } from './styles';
+import { gridStyle } from '../../app/styles';
 
 interface Props {
   tiles: Array<GameTile>;

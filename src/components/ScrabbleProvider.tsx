@@ -1,14 +1,16 @@
 import React, { createContext, FC, useContext, useMemo, useState } from "react";
 import { drawTiles } from "../utils/game-setup";
-import { GameTile } from "../utils/interfaces";
+import { GameTile, Word } from "../utils/interfaces";
+import { getValidWordsFromTiles } from '../utils/game-play';
 
 const DEFAULT_NO_OF_TILES = 7;
 
 interface ContextState {
   selectedTiles: Array<GameTile>;
+  validWords: Array<Word>;
   dealNewTiles: () => void;
   numberOfTiles: number;
-  setNumberOfTilesToDraw: (count: number) => void;
+  setNumberOfTiles: (count: number) => void;
 }
 
 const ScrabbleProviderContext = createContext<ContextState | undefined>(
@@ -29,23 +31,20 @@ export const ScrabbleProvider: FC<{ children: React.ReactNode }> = ({
   const [selectedTiles, setSelectedTiles] = useState<Array<GameTile>>(drawTiles(DEFAULT_NO_OF_TILES));
   const [numberOfTiles, setNumberOfTiles] = useState<number>(DEFAULT_NO_OF_TILES);
 
-
-  const globalContextValue = useMemo(() => {
+  const dealNewTiles = () => {
+    const newTiles = drawTiles(numberOfTiles);
+    setSelectedTiles(newTiles)
+  };
+  
+  const selectionContext = useMemo(() => {
     return {
       selectedTiles,
-      dealNewTiles: () => {
-        const newTiles = drawTiles(numberOfTiles);
-        setSelectedTiles(newTiles)
-      },
-      numberOfTiles,
-      setNumberOfTilesToDraw: (count: number) => {
-        setNumberOfTiles(count);
-      },
+      validWords: getValidWordsFromTiles(selectedTiles),
     };
-  }, [numberOfTiles, selectedTiles]);
+  }, [selectedTiles]);
 
   return (
-    <ScrabbleProviderContext.Provider value={globalContextValue}>
+    <ScrabbleProviderContext.Provider value={{...selectionContext, dealNewTiles, numberOfTiles, setNumberOfTiles}}>
       {children}
     </ScrabbleProviderContext.Provider>
   );
