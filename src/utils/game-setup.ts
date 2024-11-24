@@ -48,12 +48,12 @@ export const tileBag = distributionMap.flatMap<GameTile>((distribution) => {
 export const drawTiles = (count: number = 7): Array<GameTile> => {
   const allTiles = tileBag;
   const indexPool: Array<number> = shuffle(range(0, allTiles.length));
-  return clone(compact(
+  return compact(
     indexPool.slice(0, count).map<GameTile | undefined>((tileNumber) => {
       const tile = allTiles[tileNumber];
       return clone(tile);
     })
-  ));
+  );
 };
 
 export const drawTile = (letter: string): GameTile => {
