@@ -1,16 +1,23 @@
-import React, { createContext, FC, useContext, useMemo, useState } from "react";
+import React, {
+  createContext,
+  FC,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { drawTiles } from "../utils/game-setup";
 import { GameTile, Word } from "../utils/interfaces";
-import { getValidWordsFromTiles } from '../utils/game-play';
+import { getValidWordsFromTiles } from "../utils/game-play";
 
 const DEFAULT_NO_OF_TILES = 7;
 
 interface ContextState {
   selectedTiles: Array<GameTile>;
   validWords: Array<Word>;
-  dealNewTiles: () => void;
+  loadingResult: boolean;
   numberOfTiles: number;
   setNumberOfTiles: (count: number) => void;
+  dealNewTiles: () => void;
 }
 
 const ScrabbleProviderContext = createContext<ContextState | undefined>(
@@ -28,23 +35,40 @@ export const useGameContext = () => {
 export const ScrabbleProvider: FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [selectedTiles, setSelectedTiles] = useState<Array<GameTile>>(drawTiles(DEFAULT_NO_OF_TILES));
-  const [numberOfTiles, setNumberOfTiles] = useState<number>(DEFAULT_NO_OF_TILES);
+  const [selectedTiles, setSelectedTiles] = useState<Array<GameTile>>(
+    drawTiles(DEFAULT_NO_OF_TILES)
+  );
+  const [numberOfTiles, setNumberOfTiles] =
+    useState<number>(DEFAULT_NO_OF_TILES);
+  const [validWords, setValidWords] = useState<Array<Word>>([]);
+  const [loadingResult, setLoadingResult] = useState<boolean>(false);
 
   const dealNewTiles = () => {
     const newTiles = drawTiles(numberOfTiles);
-    setSelectedTiles(newTiles)
+    setSelectedTiles(newTiles);
   };
-  
-  const selectionContext = useMemo(() => {
-    return {
-      selectedTiles,
-      validWords: getValidWordsFromTiles(selectedTiles),
-    };
+
+  useEffect(() => {
+    // Delay to finish render of new tiles
+    setLoadingResult(true);
+    const timer = setTimeout(() => {
+      setValidWords(getValidWordsFromTiles(selectedTiles));
+      setLoadingResult(false);
+    }, 100);
+    return () => clearTimeout(timer);
   }, [selectedTiles]);
 
   return (
-    <ScrabbleProviderContext.Provider value={{...selectionContext, dealNewTiles, numberOfTiles, setNumberOfTiles}}>
+    <ScrabbleProviderContext.Provider
+      value={{
+        dealNewTiles,
+        setNumberOfTiles,
+        selectedTiles,
+        numberOfTiles,
+        loadingResult,
+        validWords,
+      }}
+    >
       {children}
     </ScrabbleProviderContext.Provider>
   );

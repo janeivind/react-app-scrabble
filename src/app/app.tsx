@@ -4,7 +4,7 @@ import { Box, Grid } from "@radix-ui/themes";
 import { useGameContext } from "components/ScrabbleProvider";
 
 function App() {
-  const { selectedTiles, validWords } = useGameContext();
+  const { selectedTiles, validWords, loadingResult } = useGameContext();
   return (
     <main className="mx-auto px-40 py-20">
       <header>
@@ -29,7 +29,7 @@ function App() {
           <TileBoard tiles={selectedTiles} />
         </Box>
         <Controls />
-        <ScoreBoard words={validWords} />
+        <ScoreBoard words={validWords} loading={loadingResult} />
       </Grid>
       <footer className="pb-16 max-w-screen-lg xl:max-w-screen-xl mx-auto text-center sm:text-right text-gray-400 font-bold">
         <a href="https://github.com/janeivind/react-app-scrabble">

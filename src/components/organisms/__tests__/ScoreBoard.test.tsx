@@ -22,4 +22,14 @@ describe("ScoreBoard", () => {
     render(<ScoreBoard words={words} />);
     expect(screen.getAllByRole('row').length).toBe(words.length + 1); // Role row includes header
   });
+
+  test("shows a loader if set", () => {
+    render(<ScoreBoard words={words} loading={true}/>);
+    expect(screen.getAllByRole('progressbar')).toBeTruthy(); 
+  });
+
+  test("shows a info if no word match", () => {
+    render(<ScoreBoard words={[]} />);
+    expect(screen.getByText(/No possible matches/)).toBeTruthy(); 
+  });
 });
