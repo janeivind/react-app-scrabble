@@ -1,6 +1,7 @@
 import { Box, Grid, Table } from "@radix-ui/themes";
 import { Word } from "../../utils/interfaces";
 import { FC } from "react";
+import TileBoard from './TileBoard';
 
 interface Props {
   words: Array<Word>;
@@ -24,8 +25,8 @@ const ScoreBoard: FC<Props> = ({ words }) => {
           {words.map((word) => {
             return (
               <Table.Row key={word.spelling}>
-                <Table.Cell>{word.spelling}</Table.Cell>
-                <Table.Cell>{word.points}</Table.Cell>
+                <Table.Cell><TileBoard tiles={word.tiles} tileType='result'/></Table.Cell>
+                <Table.Cell className="font-extrabold">{word.points}</Table.Cell>
               </Table.Row>
             );
           })}

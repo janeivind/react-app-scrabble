@@ -1,27 +1,43 @@
 import { Avatar, AvatarProps } from "@radix-ui/themes";
 import { GameTile } from "../../utils/interfaces";
 import { FC } from "react";
+import { Responsive } from "@radix-ui/themes/props";
+
+export type TileType = "dealer" | "result";
 
 interface Props extends Omit<AvatarProps, "fallback"> {
   tile: GameTile;
+  tileType: TileType;
 }
 
 const tileStyle: React.CSSProperties = {
   position: "relative",
 };
 
-const pointStyle: React.CSSProperties = {
+const pointStyleBase: React.CSSProperties = {
   position: "absolute",
-  bottom: "5px",
-  right: "10px",
-  color: "black"
+  color: "black",
 };
 
-const Tile: FC<Props> = ({ tile, ...rest }) => {
+const pointStyleDealer: React.CSSProperties = {
+  bottom: "0.2rem",
+  right: "0.5rem",
+  fontSize: "1rem",
+};
+
+const pointStyleResult: React.CSSProperties = {
+  bottom: "0rem",
+  right: "0.2rem",
+  fontSize: "0.5rem",
+};
+
+const Tile: FC<Props> = ({ tile, tileType, ...rest }) => {
+  const size: Responsive<"2" | "6"> = tileType === "result" ? "2" : "6";
+  const resultFontSize = size === "2" ? pointStyleResult : pointStyleDealer;
   return (
     <div style={tileStyle}>
-      <Avatar {...rest} fallback={tile.letter}/>
-      <div style={pointStyle}>{tile.points}</div>
+      <Avatar size={size} {...rest} fallback={tile.letter} />
+      <div style={{ ...pointStyleBase, ...resultFontSize }}>{tile.points}</div>
     </div>
   );
 };
