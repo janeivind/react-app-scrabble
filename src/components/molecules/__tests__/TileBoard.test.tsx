@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { drawTiles } from "../../../utils/game-setup";
 import { describe, expect, test } from "vitest";
-import { TileBoard } from '..';
+import { TileBoard } from '../../organisms';
 
 describe("TileBoard", () => {
   const tiles = drawTiles();

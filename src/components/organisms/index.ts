@@ -1,6 +1,6 @@
 import Controls from "./Controls";
-import NumberOfTiles from "./NumberOfTiles";
+import NumberOfTiles from "../molecules/NumberOfTiles";
 import ScoreBoard from "./ScoreBoard";
-import TileBoard from "./TileBoard";
+import TileBoard from "../molecules/TileBoard";
 
 export { TileBoard, Controls, NumberOfTiles, ScoreBoard };
