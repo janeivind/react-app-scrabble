@@ -1,24 +1,22 @@
 import { Flex } from "@radix-ui/themes";
 import { GameTile } from "../../utils/interfaces";
 import { FC } from "react";
-import { Tile } from 'components/atoms';
-import { TileType } from 'components/atoms/Tile';
+import { Tile } from "components/atoms";
+import { TileType } from "components/atoms/Tile";
 
-interface Props {
+export interface Props {
   tiles: Array<GameTile>;
   tileType?: TileType;
 }
 
 const TileBoard: FC<Props> = ({ tiles, tileType = "dealer" }) => {
   return (
-    <Flex
-      gap="3"
-      wrap="wrap"
-    >
+    <Flex gap="3" wrap="wrap">
       {tiles.map((tile, index) => {
         return (
           <Tile
             key={`${index}-${tile.letter}`}
+            tileIndex={index}
             tileType={tileType}
             variant="solid"
             radius="small"

@@ -13,6 +13,7 @@ const WrapperNumberOfTiles: FC = () => {
       value={{
         dealNewTiles: vi.fn(),
         setNumberOfTiles: setNumberOfTilesMock,
+        updateTileRatio: vi.fn(),
         selectedTiles: [],
         numberOfTiles: 7,
         loadingResult: false,

@@ -13,6 +13,7 @@ const WrapperControls: FC = () => {
       value={{
         dealNewTiles: dealNewTilesMock,
         setNumberOfTiles: vi.fn(),
+        updateTileRatio: vi.fn(),
         selectedTiles: [],
         numberOfTiles: 7,
         loadingResult: false,
