@@ -8,6 +8,7 @@ import React, {
 import { drawTiles } from "../utils/game-setup";
 import { GameTile, Word } from "../utils/interfaces";
 import { getValidWordsFromTiles } from "../utils/game-play";
+import { clone } from 'lodash';
 
 const DEFAULT_NO_OF_TILES = 7;
 
@@ -16,6 +17,7 @@ interface ContextState {
   validWords: Array<Word>;
   loadingResult: boolean;
   numberOfTiles: number;
+  updateTileRatio: (tileIndex: number) => void;
   setNumberOfTiles: (count: number) => void;
   dealNewTiles: () => void;
 }
@@ -48,6 +50,17 @@ export const ScrabbleProvider: FC<{ children: React.ReactNode }> = ({
     setSelectedTiles(newTiles);
   };
 
+  const updateTileRatio = (tileIndex: number) => {
+    selectedTiles.forEach((tile, index) => {
+      if (index === tileIndex) {
+        tile.ratio = tile.ratio < 3 ? tile.ratio + 1 : 1;
+      } else {
+        tile.ratio = 1;
+      }
+    })
+    setSelectedTiles(clone(selectedTiles));
+  };
+
   useEffect(() => {
     // Delay to finish render of new tiles
     setLoadingResult(true);
@@ -66,6 +79,7 @@ export const ScrabbleProvider: FC<{ children: React.ReactNode }> = ({
       value={{
         dealNewTiles,
         setNumberOfTiles,
+        updateTileRatio,
         selectedTiles,
         numberOfTiles,
         loadingResult,

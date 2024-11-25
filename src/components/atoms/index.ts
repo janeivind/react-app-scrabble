@@ -1,3 +1,4 @@
 import Tile from "./Tile";
+import TileStar from "./TileStar";
 
-export { Tile};
+export { Tile, TileStar};
