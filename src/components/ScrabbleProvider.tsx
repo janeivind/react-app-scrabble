@@ -20,7 +20,7 @@ interface ContextState {
   dealNewTiles: () => void;
 }
 
-const ScrabbleProviderContext = createContext<ContextState | undefined>(
+export const ScrabbleProviderContext = createContext<ContextState | undefined>(
   undefined
 );
 
@@ -54,7 +54,7 @@ export const ScrabbleProvider: FC<{ children: React.ReactNode }> = ({
     const timer = setTimeout(() => {
       setValidWords(getValidWordsFromTiles(selectedTiles));
       setLoadingResult(false);
-    }, 100);
+    }, (50 + (numberOfTiles*10)));
     return () => clearTimeout(timer);
   }, [selectedTiles]);
 

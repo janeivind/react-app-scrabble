@@ -1,7 +1,7 @@
 import { Box, Grid, Progress, Table } from "@radix-ui/themes";
 import { Word } from "../../utils/interfaces";
 import { FC, Fragment } from "react";
-import TileBoard from "./TileBoard";
+import TileBoard from "../molecules/TileBoard";
 
 interface Props {
   words: Array<Word>;
