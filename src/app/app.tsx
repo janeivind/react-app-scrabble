@@ -1,12 +1,12 @@
 import { TileBoard, Controls, ScoreBoard } from "components/organisms/index";
 import exampleImage from "../assets/scrabble.png";
-import { Box, Grid } from "@radix-ui/themes";
+import { Box, Flex, Grid } from "@radix-ui/themes";
 import { useGameContext } from "components/ScrabbleProvider";
 
 function App() {
   const { selectedTiles, validWords, loadingResult } = useGameContext();
   return (
-    <main className="mx-auto px-40 py-20">
+    <main className="mx-auto px-20 xl:px-60 py-20">
       <header>
         <div className="grid grid-flow-row-dense grid-cols-3 ">
           <div className="col-span-2">
@@ -24,13 +24,20 @@ function App() {
           </div>
         </div>
       </header>
-      <Grid gap="5">
-        <Box style={{ justifySelf: "center" }}>
+      <Flex
+        gap="5"
+        wrap="wrap"
+        justify="center"
+        direction="column"
+        style={{ justifySelf: "center" }}
+        className="2xl:w-3/4"
+      >
+        <Box style={{ justifyItems: "center" }}>
           <TileBoard tiles={selectedTiles} />
         </Box>
         <Controls />
         <ScoreBoard words={validWords} loading={loadingResult} />
-      </Grid>
+      </Flex>
       <footer className="pb-16 max-w-screen-lg xl:max-w-screen-xl mx-auto text-center sm:text-right text-gray-400 font-bold">
         <a href="https://github.com/janeivind/react-app-scrabble">
           Jan Eivind Rognås @ {new Date().getFullYear()}

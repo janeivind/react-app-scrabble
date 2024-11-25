@@ -1,4 +1,4 @@
-import { Box, Grid, Progress, Table } from "@radix-ui/themes";
+import { Box, Flex, Progress, Table } from "@radix-ui/themes";
 import { Word } from "../../utils/interfaces";
 import { FC, Fragment } from "react";
 import TileBoard from "../molecules/TileBoard";
@@ -11,7 +11,7 @@ interface Props {
 const ScoreBoard: FC<Props> = ({ words, loading = false }) => {
   return (
     <Fragment>
-      <Grid gap="3" className="mt-6 w-3/6" style={{ justifySelf: "center" }}>
+      <Flex gap="3" direction="column">
         <Box>
           <h2 className="text-2xl text-blue-400">
             Valid words and their score
@@ -61,7 +61,7 @@ const ScoreBoard: FC<Props> = ({ words, loading = false }) => {
             )}
           </Table.Body>
         </Table.Root>
-      </Grid>
+      </Flex>
     </Fragment>
   );
 };

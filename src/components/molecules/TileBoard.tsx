@@ -1,4 +1,4 @@
-import { Grid } from "@radix-ui/themes";
+import { Flex } from "@radix-ui/themes";
 import { GameTile } from "../../utils/interfaces";
 import { FC } from "react";
 import { Tile } from 'components/atoms';
@@ -11,14 +11,9 @@ interface Props {
 
 const TileBoard: FC<Props> = ({ tiles, tileType = "dealer" }) => {
   return (
-    <Grid
+    <Flex
       gap="3"
-      flow="column"
-      width=""
-      columns={tiles.length.toString()}
-      style={{
-        width: "fit-content",
-      }}
+      wrap="wrap"
     >
       {tiles.map((tile, index) => {
         return (
@@ -32,7 +27,7 @@ const TileBoard: FC<Props> = ({ tiles, tileType = "dealer" }) => {
           />
         );
       })}
-    </Grid>
+    </Flex>
   );
 };
 
