@@ -13,7 +13,8 @@ export const getValidWordsFromTiles = (
   let matchingWords: Array<Word> = [];
 
   console.time("Execution Time");
-  gameWords.forEach((word) => {
+  const filteredWords = gameWords.filter((word) => word.length <= tiles.length);
+  filteredWords.forEach((word) => {
     const testWord = [...word.letters];
     tileLetters.forEach((letter) => {
       const index = findIndex(testWord, (item) => item === letter);
